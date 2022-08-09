@@ -77,7 +77,7 @@ public class ActivityPlayTicTacToe extends AppCompatActivity {
                 }
 
                 gameWin = false;
-                if(!checkWin() && selMode == 1 && currentPlayer == 1){
+                if(!checkWin() && selMode == 0 && currentPlayer == 1){
                     int robotChoice = rand.nextInt(9);
                     while (currentBoard[robotChoice] != 2) {
                         robotChoice = rand.nextInt(9);
