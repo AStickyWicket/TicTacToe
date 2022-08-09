@@ -1,16 +1,24 @@
 package com.example.tictactoe;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.Arrays;
+import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class ActivityPlayTicTacToe extends AppCompatActivity {
     boolean disableBoard = false;
+    int selMode;
+    boolean gameWin;
+    Button playAgain;
+    Random rand = new Random();
     //0 = X 1 = O
     int currentPlayer = 0;
     int[] currentBoard = {2, 2, 2, 2, 2, 2, 2, 2, 2};
@@ -24,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
             {0, 4, 8},
             {2, 4, 6}
     };
+
+    int[] imgViews = new int[] { R.id.imgvTopLeft, R.id.imgvTopMiddle, R.id.imgvTopRight,
+    R.id.imgvMiddleLeft, R.id.imgvMiddle, R.id.imgvMiddleRight,
+    R.id.imgvBottomLeft, R.id.imgvBottomMiddle, R.id.imgvBottomRight};
 
     int turnCounter = 0;
 
@@ -48,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public void onPlayerClick(View view) {
         ImageView img = (ImageView) view;
         int selectedImg = Integer.parseInt(img.getTag().toString());
-        Button playAgain = findViewById(R.id.btnPlayAgain);
+        playAgain = findViewById(R.id.btnPlayAgain);
 
         if (!disableBoard) {
 
@@ -64,24 +76,18 @@ public class MainActivity extends AppCompatActivity {
                     currentPlayer = 0;
                 }
 
-                boolean gameWin = false;
-                //Check for winner
-                for (int[] winCondition : winConditions) {
-                    if (currentBoard[winCondition[0]] == currentBoard[winCondition[1]] &&
-                            currentBoard[winCondition[1]] == currentBoard[winCondition[2]]
-                            && currentBoard[winCondition[0]] != 2) {
-                        gameWin = true;
-                        playAgain.setVisibility(View.VISIBLE);
-                        disableBoard = true;
-
-                        if (currentBoard[winCondition[0]] == 0) {
-                            Toast.makeText(this, "X wins!", Toast.LENGTH_LONG).show();
-
-                        } else {
-                            Toast.makeText(this, "O wins!", Toast.LENGTH_LONG).show();
-                        }
+                gameWin = false;
+                if(!checkWin() && selMode == 1 && currentPlayer == 1){
+                    int robotChoice = rand.nextInt(9);
+                    while (currentBoard[robotChoice] != 2) {
+                        robotChoice = rand.nextInt(9);
                     }
+
+                    (new Handler()).postDelayed(null,5000);
+                    onPlayerClick(findViewById(imgViews[robotChoice]));
+
                 }
+
 
                 if (turnCounter == 9 && !gameWin) {
                     Toast.makeText(this, "Draw!", Toast.LENGTH_LONG).show();
@@ -91,9 +97,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean checkWin(){
+        for (int[] winCondition : winConditions) {
+            if (currentBoard[winCondition[0]] == currentBoard[winCondition[1]] &&
+                    currentBoard[winCondition[1]] == currentBoard[winCondition[2]]
+                    && currentBoard[winCondition[0]] != 2) {
+                gameWin = true;
+                playAgain.setVisibility(View.VISIBLE);
+                disableBoard = true;
+
+                if (currentBoard[winCondition[0]] == 0) {
+                    Toast.makeText(this, "X wins!", Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(this, "O wins!", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+        return gameWin;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        selMode = intent.getIntExtra("selMode", 0);
     }
 }
