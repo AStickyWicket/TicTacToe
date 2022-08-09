@@ -46,6 +46,7 @@ public class ActivityPlayTicTacToe extends AppCompatActivity {
         Arrays.fill(currentBoard, 2);
 
         findViewById(R.id.btnPlayAgain).setVisibility(View.INVISIBLE);
+        findViewById(R.id.btnBckMenu).setVisibility(View.INVISIBLE);
         ((ImageView) findViewById(R.id.imgvTopLeft)).setImageResource(0);
         ((ImageView) findViewById(R.id.imgvTopMiddle)).setImageResource(0);
         ((ImageView) findViewById(R.id.imgvTopRight)).setImageResource(0);
@@ -55,6 +56,10 @@ public class ActivityPlayTicTacToe extends AppCompatActivity {
         ((ImageView) findViewById(R.id.imgvBottomLeft)).setImageResource(0);
         ((ImageView) findViewById(R.id.imgvBottomMiddle)).setImageResource(0);
         ((ImageView) findViewById(R.id.imgvBottomRight)).setImageResource(0);
+    }
+
+    public void backToMainMenu(View view){
+        finish();
     }
 
     public void onPlayerClick(View view) {
@@ -83,15 +88,20 @@ public class ActivityPlayTicTacToe extends AppCompatActivity {
                         robotChoice = rand.nextInt(9);
                     }
 
-                    (new Handler()).postDelayed(null,5000);
-                    onPlayerClick(findViewById(imgViews[robotChoice]));
-
+                    int finalRobotChoice = robotChoice;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            onPlayerClick(findViewById(imgViews[finalRobotChoice]));
+                        }
+                    },1500);
                 }
 
 
                 if (turnCounter == 9 && !gameWin) {
                     Toast.makeText(this, "Draw!", Toast.LENGTH_LONG).show();
                     playAgain.setVisibility(View.VISIBLE);
+                    findViewById(R.id.btnBckMenu).setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -104,6 +114,7 @@ public class ActivityPlayTicTacToe extends AppCompatActivity {
                     && currentBoard[winCondition[0]] != 2) {
                 gameWin = true;
                 playAgain.setVisibility(View.VISIBLE);
+                findViewById(R.id.btnBckMenu).setVisibility(View.VISIBLE);
                 disableBoard = true;
 
                 if (currentBoard[winCondition[0]] == 0) {

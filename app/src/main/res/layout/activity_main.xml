@@ -135,12 +135,24 @@
         android:id="@+id/btnPlayAgain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="resetBoard"
         android:text="Play Again?"
         android:visibility="gone"
-        android:onClick="resetBoard"
         app:layout_constraintBottom_toTopOf="@+id/imgvTopMiddle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imgvGrid" />
+
+    <Button
+        android:id="@+id/btnBckMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="backToMainMenu"
+        android:text="Menu"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgvBottomMiddle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
